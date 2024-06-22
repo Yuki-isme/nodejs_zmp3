@@ -6,6 +6,7 @@ class ZingMp3Controller extends Controller {
     static async index(req, res) {
         const response = await ZingMp3.getHome();
         const song = await ZingMp3.getSong('Z77B8FA0');
+        const songInfo = await ZingMp3.getInfoSong('Z77B8FA0');
         let items = response.data.items;
         let contentSectionType = {};
 
