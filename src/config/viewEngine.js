@@ -2,6 +2,7 @@
 const express = require("express");
 const path = require("node:path");
 const { engine } = require('express-handlebars');
+const helper = require('../helper/hbsHelper');
 
 const configViewEngine = (app) => {
     app.engine('.hbs', engine({
@@ -10,7 +11,8 @@ const configViewEngine = (app) => {
         partialsDir: [
             path.join(__dirname, '../views/components'),
             path.join(__dirname, '../views/header')
-        ]
+        ],
+        helpers: helper
     }));
     app.set('view engine', '.hbs');
 

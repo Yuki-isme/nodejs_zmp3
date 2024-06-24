@@ -3,12 +3,31 @@ const { ZingMp3 } = require("../custom_modules/ZingMp3Api");
 const path = require("node:path");
 
 class ZingMp3Controller extends Controller {
+    static async #calTime(seconds) {
+        let minutes = Math.floor(seconds / 60);
+        let remainingSeconds = seconds % 60;
+        return minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+    }
     static async index(req, res) {
         const response = await ZingMp3.getHome();
-        const song = await ZingMp3.getSong('Z77B8FA0');
-        const songInfo = await ZingMp3.getInfoSong('Z77B8FA0');
+        const playlist = await ZingMp3.getDetailPlaylist('ZWZB96AI');
+        // const song = await ZingMp3.getSong('Z77B8FA0');
+        // const songInfo = await ZingMp3.getInfoSong('Z77B8FA0');
         let items = response.data.items;
         let contentSectionType = {};
+
+        let songs = [];
+        for (const [index, item] of Object.entries(playlist.data.song.items)) {
+            let time = await ZingMp3Controller.#calTime(item.duration);
+            songs.push({
+                id: item.encodeId,
+                background: item.thumbnail,
+                name: item.title,
+                singer: item.artistsNames,
+                pathSong: '/assets/music/list-song/0.mp3',
+                duration : time,
+            });
+        }
 
         // for (const [index, item] of Object.entries(items)) {
         //     // console.log(`${index}: `, {sectionType: item.sectionType, viewType: item.viewType, sectionId: item.sectionId, title: item.title, type: typeof item.items !== "undefined"});
@@ -105,7 +124,7 @@ class ZingMp3Controller extends Controller {
         // let sectionTypePath = path.join(__dirname, `../views/layouts/main.hbs`);
         // let html = await super._renderHbsFile(sectionTypePath, {url: 'aa'});
 
-        await super._index(req, res, 'ZingMp3', { items: items, content: contentSectionType });
+        await super._index(req, res, 'ZingMp3', { items: items, content: contentSectionType, songs: songs });
     }
 
     static async getSong (req, res) {

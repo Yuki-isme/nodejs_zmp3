@@ -1989,7 +1989,13 @@
     </div> -->
 </div>
 
+<script src="/assets/javascript/jquery.js"></script>
 <script src="/assets/javascript/main.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        app.start({{{toJSON data.songs}}});
+    });
+</script>
 </body>
 
 </html>
