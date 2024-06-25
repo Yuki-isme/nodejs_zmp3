@@ -1004,7 +1004,7 @@ const app = {
         // KHI TIẾN ĐỘ BÀI HÁT THAY ĐỔI
         audio.addEventListener('timeupdate', function() {
             if (audio.duration) {
-                const progressPercent = Math.floor((audio.currentTime / audio.duration) * 100);
+                const progressPercent = ((audio.currentTime / audio.duration) * 100);
                 progress.val(progressPercent); // on desktop
                 $('#progress2').val(progressPercent); // on mobile
             }
